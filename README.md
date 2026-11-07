@@ -2,7 +2,7 @@
 
 **Clear Skies** is a mod for [Savage Wind Recomp](https://github.com/Revivedx/SavageWindRecomp), the native PC version of *The Legend of Zelda: Breath of the Wild*. It brings over **Clarity**, the much-loved look from Cemu's Breath of the Wild graphic pack, with **all 20 of its presets**. You get less haze, less blown-out bloom and richer colour, without changing a single file of Savage Wind.
 
-**[Download the newest release](../../releases)** · [Install it](#how-to-install) · [The presets](#the-presets) · [Help test it](#help-test-it)
+**[Download the newest release](https://github.com/devall96/ClearSkies/releases)** · [Install it](#how-to-install) · [The presets](#the-presets) · [Help test it](#help-test-it)
 
 > [!CAUTION]
 > **No game files are included, and none ever will be**: not in the code, the releases, the issues or the wiki. Clear Skies doesn't include Savage Wind either. You need your own working copy of Savage Wind, set up with your own game files, dumped from your own Switch. Please don't post game files, dumps, keys or an installed copy here.
@@ -14,7 +14,7 @@
 > **Early, and tested on one PC.** Clear Skies has run in the game on one Windows PC with an AMD Radeon RX 9070 XT, using Serfrost's preset with HDR off. Every preset is tested automatically on that GPU, but NVIDIA, Intel, HDR output, Linux and Steam Deck haven't been tried yet. Clear Skies doesn't touch your saves, but it's still worth keeping a copy of any you care about.
 
 > [!NOTE]
-> **Not official.** Clear Skies is a fan-made mod. It isn't made by, affiliated with or endorsed by the Savage Wind Recomp team, the Cemu team or Nintendo. Please don't report Clear Skies problems to Savage Wind or Cemu: [open an issue here](../../issues) instead.
+> **Not official.** Clear Skies is a fan-made mod. It isn't made by, affiliated with or endorsed by the Savage Wind Recomp team, the Cemu team or Nintendo. Please don't report Clear Skies problems to Savage Wind or Cemu: [open an issue here](https://github.com/devall96/ClearSkies/issues) instead.
 
 ## Why this exists
 
@@ -29,7 +29,7 @@ Clarity was one of the best parts of my Savage Wind fork, [Slop of the Wild](htt
 | ![Kakariko Village](docs/images/kakariko.jpg) | ![Hateno Village](docs/images/hateno.jpg) |
 | ![Rito Village](docs/images/rito.jpg) | ![Gerudo Desert](docs/images/gerudo.jpg) |
 
-These were taken in [Slop of the Wild](https://github.com/devall96/Slop-of-the-Wild), the fork where this Clarity port started, while Serfrost's preset was its default look. Slop of the Wild had other picture options too, such as a longer draw distance, so plain Savage Wind with Clear Skies won't look exactly the same. If you take good before-and-after shots with Clear Skies, [share them in an issue](../../issues).
+These were taken in [Slop of the Wild](https://github.com/devall96/Slop-of-the-Wild), the fork where this Clarity port started, while Serfrost's preset was its default look. Slop of the Wild had other picture options too, such as a longer draw distance, so plain Savage Wind with Clear Skies won't look exactly the same. If you take good before-and-after shots with Clear Skies, [share them in an issue](https://github.com/devall96/ClearSkies/issues).
 
 <p align="center"><img src="docs/launcher.png" alt="The Clear Skies launcher: choose a look, point it at savagewind.exe, press Play" width="576"></p>
 
@@ -53,7 +53,7 @@ These were taken in [Slop of the Wild](https://github.com/devall96/Slop-of-the-W
 ## How to install
 
 1. Have a working **[Savage Wind](https://github.com/Revivedx/SavageWindRecomp)** first: set up with your game files, and started at least once. For the smoothest first run, also use **Precompile shaders** in Savage Wind Configuration.
-2. **[Download the newest Clear Skies](../../releases)** and unzip the `ClearSkies` folder anywhere. Its files must stay together.
+2. **[Download the newest Clear Skies](https://github.com/devall96/ClearSkies/releases)** and unzip the `ClearSkies` folder anywhere. Its files must stay together.
 3. Run **ClearSkies.exe**, choose a look, click **Browse** to find your `savagewind.exe`, and press **Play**.
 
 From then on, start the game with ClearSkies.exe whenever you want Clarity. To change the look, pick another preset and press Play again: the game needs a restart to switch.
@@ -136,14 +136,14 @@ Clarity replaces the tone-mapping composite (shader 1)
 | Savage Wind opens its setup screen | That copy of Savage Wind isn't set up yet. Finish its setup, then use Clear Skies. |
 | No log, or no `loaded into` line | The layer didn't load. Start the game from ClearSkies.exe and keep all of Clear Skies' files together. |
 | `failed to compile` | A value in `clearskies.ini` can't be used. The message says which. Remove that line. |
-| Loaded, but never `replaces the tone-mapping composite` | Your Savage Wind builds that shader differently. Please [report it](../../issues) with the log. |
+| Loaded, but never `replaces the tone-mapping composite` | Your Savage Wind builds that shader differently. Please [report it](https://github.com/devall96/ClearSkies/issues) with the log. |
 | Stutters the first time you see places | That's Savage Wind compiling shaders. Run **Precompile shaders** in Savage Wind Configuration. |
 
 ## Help test it
 
 So far Clear Skies has been tested on one PC, so **reports from other hardware are the most useful thing you can send.** That goes for NVIDIA and Intel cards, older AMD cards, HDR monitors, laptops, Linux and Steam Deck. Good news helps too: "it works on this card" tells me what works.
 
-To report, [open an issue](../../issues) with:
+To report, [open an issue](https://github.com/devall96/ClearSkies/issues) with:
 - Your graphics card and driver version
 - Which preset, and whether HDR is on in Savage Wind
 - `clearskies.log` from the Clear Skies folder, and `savagewind.log` from Savage Wind's folder
