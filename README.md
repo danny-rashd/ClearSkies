@@ -18,7 +18,7 @@
 
 ## Why this exists
 
-Clarity was one of the best parts of my Savage Wind fork, [Slop of the Wild](https://github.com/devall96/Slop-of-the-Wild), which is now retired in favour of Savage Wind itself. I didn't want Clarity to go with it. Clear Skies puts Clarity on plain Savage Wind as a separate, add-on mod: it keeps up with Savage Wind's own updates, it can be turned off by starting the game normally, and it brings every Cemu preset along, not just the three Slop of the Wild had.
+This Clarity port started in a personal, experimental build of Savage Wind, as a proof of concept. It worked well enough that I wanted it on plain Savage Wind for everyone. Clear Skies puts it there as a separate, add-on mod: it keeps up with Savage Wind's own updates, it can be turned off by starting the game normally, and it brings every Cemu preset along, not just the three the proof of concept had.
 
 ## Screenshots
 
@@ -29,7 +29,7 @@ Clarity was one of the best parts of my Savage Wind fork, [Slop of the Wild](htt
 | ![Kakariko Village](docs/images/kakariko.jpg) | ![Hateno Village](docs/images/hateno.jpg) |
 | ![Rito Village](docs/images/rito.jpg) | ![Gerudo Desert](docs/images/gerudo.jpg) |
 
-These were taken in [Slop of the Wild](https://github.com/devall96/Slop-of-the-Wild), the fork where this Clarity port started, while Serfrost's preset was its default look. Slop of the Wild had other picture options too, such as a longer draw distance, so plain Savage Wind with Clear Skies won't look exactly the same. If you take good before-and-after shots with Clear Skies, [share them in an issue](https://github.com/devall96/ClearSkies/issues).
+These were taken with Serfrost's preset in a personal, experimental build of Savage Wind, the proof of concept this Clarity port started in. If you take good before-and-after shots with Clear Skies, [share them in an issue](https://github.com/devall96/ClearSkies/issues).
 
 <p align="center"><img src="docs/launcher.png" alt="The Clear Skies launcher: choose a look, point it at savagewind.exe, press Play" width="576"></p>
 
