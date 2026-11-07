@@ -18,13 +18,20 @@
 
 ## Why this exists
 
-Clarity was one of the best parts of my own Savage Wind fork, [Slop of the Wild](https://github.com/devall96/Slop-of-the-Wild). But you shouldn't have to switch to a whole fork just to get one look. Clear Skies puts Clarity on plain Savage Wind as a separate, add-on mod: it keeps up with Savage Wind's own updates, it can be turned off by starting the game normally, and it brings every Cemu preset along, not just the three Slop of the Wild had.
+Clarity was one of the best parts of my Savage Wind fork, [Slop of the Wild](https://github.com/devall96/Slop-of-the-Wild), which is now retired in favour of Savage Wind itself. I didn't want Clarity to go with it. Clear Skies puts Clarity on plain Savage Wind as a separate, add-on mod: it keeps up with Savage Wind's own updates, it can be turned off by starting the game normally, and it brings every Cemu preset along, not just the three Slop of the Wild had.
 
 ## Screenshots
 
-<p align="center"><img src="docs/launcher.png" alt="The Clear Skies launcher: choose a look, point it at savagewind.exe, press Play" width="576"></p>
+| | |
+| --- | --- |
+| ![A golden evening in Hyrule Field](docs/images/golden-field.jpg) | ![Morning in Hyrule Field](docs/images/morning-field.jpg) |
+| ![The Great Plateau](docs/images/plateau.jpg) | ![The road to Hyrule Castle](docs/images/castle-road.jpg) |
+| ![Kakariko Village](docs/images/kakariko.jpg) | ![Hateno Village](docs/images/hateno.jpg) |
+| ![Rito Village](docs/images/rito.jpg) | ![Gerudo Desert](docs/images/gerudo.jpg) |
 
-In-game comparisons are coming. If you take good before-and-after shots, [share them in an issue](../../issues).
+These were taken in [Slop of the Wild](https://github.com/devall96/Slop-of-the-Wild), the fork where this Clarity port started, while Serfrost's preset was its default look. Slop of the Wild had other picture options too, such as a longer draw distance, so plain Savage Wind with Clear Skies won't look exactly the same. If you take good before-and-after shots with Clear Skies, [share them in an issue](../../issues).
+
+<p align="center"><img src="docs/launcher.png" alt="The Clear Skies launcher: choose a look, point it at savagewind.exe, press Play" width="576"></p>
 
 ## What it adds
 
