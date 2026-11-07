@@ -1,0 +1,59 @@
+Clear Skies: licenses and credits
+=================================
+
+Clear Skies is a mod for Savage Wind Recomp. It adds the Clarity look from Cemu's Breath of the Wild graphic
+pack. It is a fan project, not made by or affiliated with the Savage Wind Recomp team, the Cemu team or Nintendo.
+
+
+1. Clear Skies' own code
+------------------------
+MIT License, Copyright (c) 2026 devall96. The full text is in LICENSE.
+
+
+2. Clarity shader and presets (Cemu graphic packs)
+--------------------------------------------------
+Source:  https://github.com/cemu-project/cemu_graphic_packs
+         src/BreathOfTheWild/Enhancements/37040a485a29d54e_00000000000003c9_ps.txt and rules.txt
+         (copied unchanged into third_party/cemu/, from commit 7e476164072e5978f62fd727cb013d474664e793)
+License: CC0 1.0 Universal (public domain dedication),
+         https://creativecommons.org/publicdomain/zero/1.0/
+
+CC0 asks for nothing in return, but the credit belongs to the people who made it:
+  Clarity GFX: Jamie (main code) and Kiri (code and ReShade logic), with Crementif.
+  Presets: Serfrost (Recommended, Dim Display, Bright Display), Bruz, CellHunter, Jamie, t3nka (Neutral+),
+  The Complaining Gamer, Visk (ViskClarity), Silentverge (Survival of the Wild, Warmer and Colder),
+  Godot (Mexican), Hexaae (Clear), MaranBr, YeMaoWuXin (Bright colors, Vivid and clear), Cobalt; the Contrasty
+  and Filmic presets and the User-Defined starting values come with the pack without a named creator.
+  Several passes are ports of ReShade effects (LumaSharpen, Technicolor, Technicolor 2, Levels, Lift Gamma Gain,
+  Vibrance, FilmicPass, DPX, Curves) as they appear in the pack.
+
+What Clear Skies changes: the presets and functions are read from those files by tools/gen_presets.py; the
+shader's inputs are renamed for Savage Wind, a pixel's size comes from the scene texture instead of Cemu's
+resolution scale, the HDR scene is clamped at 10000 as the game's own shader does, the result is clamped to
+[0, 1], and Tone_map 9 runs ACES (the pack tests a misspelt name there, so it does nothing in Cemu).
+
+
+3. Vulkan declarations
+----------------------
+src/vk_min.h declares the few Vulkan types and loader-layer structures the layer uses, written to match the
+Vulkan API and loader interface as defined in the Khronos Vulkan-Headers (https://github.com/KhronosGroup/Vulkan-Headers),
+which are licensed Apache-2.0 OR MIT. Copyright 2015-2026 The Khronos Group Inc.
+Vulkan is a registered trademark of the Khronos Group Inc.
+
+
+4. Fira Sans (the README banner's lettering)
+--------------------------------------------
+third_party/fonts/FiraSans: FiraSans-SemiBold.ttf and FiraSans-Medium.ttf, unchanged.
+Copyright (c) 2012-2015, The Mozilla Foundation and Telefonica S.A.
+SIL Open Font License 1.1: the full text is in third_party/fonts/FiraSans/FiraSans-OFL.txt.
+Used only to draw docs/art/banner.png (tools/make_banner.ps1); not part of the mod's download.
+
+
+5. Not included
+---------------
+- Savage Wind Recomp (MIT License, Copyright (c) 2026 Revivedx and the Savage Wind Recomp contributors;
+  Copyright (c) 2026 Peiikai, LAS Recomp). Clear Skies contains none of its code. It works with your own copy,
+  recognising the shader that Savage Wind builds and using the shaderc library (libshaderc_shared.dll, Apache-2.0)
+  that ships with Savage Wind. Nothing in Savage Wind's folder is changed.
+- No game files, keys or Nintendo code. The Legend of Zelda: Breath of the Wild is (c) Nintendo. Nintendo Switch
+  and The Legend of Zelda are trademarks of Nintendo.

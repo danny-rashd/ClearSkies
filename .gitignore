@@ -1,0 +1,11 @@
+# Build output
+build/
+dist/
+*.zip
+
+# The Zig toolchain (download it yourself: https://ziglang.org/download/)
+tools/zig/
+
+# Logs and local settings from test runs
+*.log
+__pycache__/
