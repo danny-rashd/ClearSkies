@@ -18,7 +18,9 @@
 
 ## Why this exists
 
-This Clarity port started in a personal, experimental build of Savage Wind, as a proof of concept. It worked well enough that I wanted it on plain Savage Wind for everyone. Clear Skies puts it there as a separate, add-on mod: it keeps up with Savage Wind's own updates, it can be turned off by starting the game normally, and it brings every Cemu preset along, not just the three the proof of concept had.
+This Clarity port started in a personal, experimental build of Savage Wind, as a proof of concept. Clarity can't be added to Savage Wind itself, and that's fine: Savage Wind doesn't need to be everything to everyone. Clear Skies is for the people who loved Cemu's Clarity and want it back.
+
+So instead of a fork, it's a separate, add-on mod. It works with Savage Wind as it is and keeps up with its updates, it can be turned off by starting the game normally, and it brings every one of Cemu's presets along, not just the three the proof of concept had.
 
 ## Screenshots
 
