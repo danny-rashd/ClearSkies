@@ -169,7 +169,15 @@
     .note b { color: var(--text); }
     .note.caution { border-left-color: #e5676b; }
     .note.warn { border-left-color: var(--warn); }
-    .note.ai { border-left-color: var(--accent); }
+    .ai-warning {
+      display: flex; gap: 14px; align-items: flex-start;
+      margin: 0 0 18px; padding: 16px 20px;
+      background: #2a2214; border: 1px solid #8a6a2e; border-radius: 16px;
+      color: #e8dcc4; font-size: 15px;
+    }
+    .ai-warning svg { width: 26px; height: 26px; flex: none; fill: #f5b84c; margin-top: 1px; }
+    .ai-warning p { margin: 0; }
+    .ai-warning b { color: #ffd98a; }
 
     h3.section { font-family: "Fira Sans", Inter, sans-serif; font-size: 26px; letter-spacing: -0.3px; margin: 56px 0 6px; }
     .section-sub { color: var(--muted); margin: 0 0 20px; font-size: 15px; max-width: 70ch; }
@@ -251,6 +259,11 @@
 
   <div class="wrap">
     <main>
+      <aside class="ai-warning" role="note" aria-label="Made with AI">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+        <p><b>Made with AI.</b> Every line of Clear Skies' code, its tests, the icon and this page were written by Claude, Anthropic's AI, through Claude Code. A human, devall96, directs it and plays every build, but <b>no human reviews the code line by line.</b> If you don't want to run code made that way, don't download it. As with anything from the internet, you run it at your own risk.</p>
+      </aside>
+
       <section class="cards" aria-label="Download">
         <article class="card main">
           <div class="os">
@@ -283,9 +296,7 @@
 
       <div class="notes">
         <p class="note caution"><b>No game files, ever.</b> Not in the download, the issues or the wiki. Please don't post game files, dumps, keys or an installed copy.</p>
-        <p class="note warn"><b>Early, tested on one PC</b> (AMD RX 9070 XT, HDR off). NVIDIA, Intel, HDR, Linux and Steam Deck reports are very welcome: <a href="https://github.com/devall96/ClearSkies/issues">open an issue</a>.</p>
-        <p class="note ai"><b>Made with AI.</b> The code, tests, icon and this page were written by Claude through Claude Code, directed and play-tested by devall96. No human reviews the code line by line.</p>
-      </div>
+        <p class="note warn"><b>Early, tested on one PC</b> (AMD RX 9070 XT, HDR off). NVIDIA, Intel, HDR, Linux and Steam Deck reports are very welcome: <a href="https://github.com/devall96/ClearSkies/issues">open an issue</a>.</p>      </div>
 
       <h3 class="section">What Clarity looks like</h3>
       <p class="section-sub">Serfrost's preset, Clarity's recommended look. Nineteen more ship with it, from Filmic to Survival of the Wild, and all 65 of Clarity's settings can be tuned on top.</p>
