@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Download Clear Skies</title>
+  <meta name="description" content="Clear Skies brings Cemu's Clarity look, with all 20 presets, to Savage Wind Recomp. A full mod manager is on the way. For Windows.">
+  <link rel="icon" href="icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* The launcher's own colours (src/ui.h). */
+      --sky-top: #2b7fd4;
+      --sky-low: #a8d8f6;
+      --sun: #fff1c2;
+      --cloud: #f7fbff;
+      --bg: #10161e;
+      --bg-alt: #0c1218;
+      --surface: #19222d;
+      --surface-high: #232e3b;
+      --border: #2c3a48;
+      --text: #e6eef5;
+      --muted: #8a9db0;
+      --faint: #5f7285;
+      --accent: #4fb0f0;
+      --accent-hot: #74c4f7;
+      --on-accent: #051626;
+      --warn: #e0a85c;
+      --good: #6cd08c;
+      color-scheme: dark;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: var(--accent); }
+    code {
+      font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+      font-size: 0.86em;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1px 6px;
+      overflow-wrap: anywhere;
+    }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; position: relative; }
+
+    /* The sky: the same gradient, sun and clouds as the launcher's header. */
+    .sky {
+      position: relative; overflow: hidden;
+      background: linear-gradient(180deg, var(--sky-top) 0%, #5aa3e3 55%, var(--sky-low) 100%);
+      color: #fff;
+      padding: 44px 0 64px;
+    }
+    .sky::after { /* soft fade into the page */
+      content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 40px;
+      background: linear-gradient(180deg, transparent, rgba(16, 22, 30, 0.35));
+    }
+    .sun {
+      position: absolute; right: 12%; top: 34px;
+      width: 120px; height: 120px; border-radius: 50%;
+      background: #fde9a6;
+      box-shadow: 0 0 0 18px rgba(255, 241, 194, 0.18), 0 0 90px 40px rgba(255, 241, 194, 0.45);
+    }
+    .cloud {
+      position: absolute; background: var(--cloud); border-radius: 999px;
+      box-shadow: 0 0 30px 6px rgba(247, 251, 255, 0.35);
+    }
+    .cloud::before, .cloud::after { content: ""; position: absolute; background: inherit; border-radius: 50%; }
+    .cloud.c1 { width: 210px; height: 58px; right: 4%; bottom: 46px; }
+    .cloud.c1::before { width: 92px; height: 92px; left: 34px; top: -46px; }
+    .cloud.c1::after { width: 70px; height: 70px; left: 110px; top: -30px; }
+    .cloud.c2 { width: 120px; height: 34px; right: 26%; bottom: 120px; opacity: 0.85; }
+    .cloud.c2::before { width: 54px; height: 54px; left: 20px; top: -26px; }
+    .cloud.c2::after { width: 42px; height: 42px; left: 62px; top: -18px; }
+
+    .brand { display: flex; align-items: center; gap: 14px; }
+    .brand img { width: 56px; height: 56px; border-radius: 14px; flex: none; box-shadow: 0 10px 24px -10px rgba(5, 22, 38, 0.7); }
+    .brand span { font-family: "Fira Sans", Inter, sans-serif; font-size: 28px; font-weight: 700; letter-spacing: -0.3px; text-shadow: 0 2px 6px rgba(5, 22, 38, 0.35); }
+    h1 {
+      font-family: "Fira Sans", Inter, sans-serif;
+      font-size: clamp(34px, 5.4vw, 56px);
+      line-height: 1.06;
+      letter-spacing: -0.8px;
+      margin: 30px 0 14px;
+      max-width: 15ch;
+      text-shadow: 0 2px 10px rgba(5, 22, 38, 0.35);
+    }
+    .lede { font-size: 18px; max-width: 50ch; margin: 0; color: #f2f8fd; text-shadow: 0 1px 4px rgba(5, 22, 38, 0.35); }
+    .release {
+      display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      margin-top: 22px; padding: 8px 14px;
+      background: rgba(5, 22, 38, 0.38); border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 999px;
+      font-size: 14px; color: #dcecf8;
+      backdrop-filter: blur(6px);
+    }
+    .release b { color: #fff; font-weight: 600; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--good); flex: none; }
+
+    main { margin-top: -34px; position: relative; z-index: 1; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+      gap: 18px;
+    }
+    .card {
+      display: flex; flex-direction: column; gap: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 26px 24px 24px;
+    }
+    .card.main { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 18px 50px -20px rgba(79, 176, 240, 0.55); }
+    .card h2 { margin: 0; font-size: 22px; letter-spacing: -0.3px; }
+    .card .sub { display: block; color: var(--muted); font-size: 13px; font-weight: 500; }
+    .os { display: flex; align-items: center; gap: 12px; }
+    .os svg { width: 30px; height: 30px; flex: none; fill: var(--accent); }
+    .label {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted);
+    }
+
+    .btn {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      text-decoration: none;
+      border-radius: 14px;
+      padding: 14px 18px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: var(--surface-high);
+      color: var(--text);
+      transition: transform 0.12s ease, background-color 0.12s ease;
+    }
+    .btn:hover { background: #2b3847; }
+    .btn:active { transform: translateY(1px); }
+    .btn:focus-visible { outline: 2px solid var(--accent-hot); outline-offset: 2px; }
+    .btn.primary { background: var(--accent); border-color: transparent; color: var(--on-accent); font-size: 17px; }
+    .btn.primary:hover { background: var(--accent-hot); }
+    .btn .file { display: flex; flex-direction: column; min-width: 0; }
+    .btn .file small { font-weight: 500; opacity: 0.8; font-size: 12.5px; overflow-wrap: anywhere; }
+    .btn .size { font-weight: 500; font-size: 13px; opacity: 0.85; white-space: nowrap; }
+
+    .steps { margin: 2px 0 0; padding-left: 20px; color: var(--muted); font-size: 14.5px; }
+    .steps li { margin: 5px 0; }
+    .steps b { color: var(--text); font-weight: 600; }
+
+    .needs { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+    .needs li { display: flex; gap: 12px; color: var(--muted); font-size: 14.5px; }
+    .needs li b { color: var(--text); font-weight: 600; }
+    .needs svg { width: 20px; height: 20px; flex: none; margin-top: 1px; fill: var(--good); }
+
+    .notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin: 18px 0 0; }
+    .note {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--faint);
+      border-radius: 14px;
+      padding: 14px 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .note b { color: var(--text); }
+    .note.caution { border-left-color: #e5676b; }
+    .note.warn { border-left-color: var(--warn); }
+    .note.ai { border-left-color: var(--accent); }
+
+    h3.section { font-family: "Fira Sans", Inter, sans-serif; font-size: 26px; letter-spacing: -0.3px; margin: 56px 0 6px; }
+    .section-sub { color: var(--muted); margin: 0 0 20px; font-size: 15px; max-width: 70ch; }
+
+    .gallery { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 0; }
+    .gallery figure { margin: 0; position: relative; }
+    .gallery figure.wide { grid-column: span 2; grid-row: span 2; }
+    .gallery img {
+      display: block; width: 100%; height: 100%; aspect-ratio: 16 / 9; object-fit: cover;
+      border-radius: 14px; border: 1px solid var(--border);
+    }
+    .gallery figcaption {
+      position: absolute; left: 10px; bottom: 10px;
+      font-size: 12px; font-weight: 600; color: #fff;
+      background: rgba(5, 22, 38, 0.6); padding: 3px 9px; border-radius: 999px;
+      backdrop-filter: blur(4px);
+    }
+
+    .points {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px; margin: 0; padding: 0; list-style: none;
+    }
+    .points li { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 16px 18px; color: var(--muted); font-size: 14.5px; }
+    .points li b { display: block; color: var(--text); font-size: 15.5px; margin-bottom: 2px; }
+
+    .launcher { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; margin-top: 56px; }
+    .launcher img { display: block; width: 100%; max-width: 576px; height: auto; border-radius: 12px; box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.8); }
+    .launcher h3.section { margin-top: 0; }
+
+    .planned { margin-top: 64px; }
+    .planned-head { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 14px; margin: 0 0 6px; }
+    .planned-head h3.section { margin: 0; }
+    .pill {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.4px;
+      color: var(--warn); border: 1px solid color-mix(in srgb, var(--warn) 55%, transparent);
+      background: color-mix(in srgb, var(--warn) 12%, transparent);
+      padding: 3px 10px; border-radius: 999px;
+    }
+    .planned .section-sub { margin-top: 8px; }
+    .planned .points li { border-style: dashed; }
+    .later { color: var(--muted); font-size: 14.5px; margin: 16px 0 0; }
+    .later b { color: var(--text); }
+
+    footer { margin: 56px 0 40px; padding-top: 22px; border-top: 1px solid var(--border); color: var(--muted); font-size: 14px; }
+    footer nav { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-bottom: 12px; }
+    footer a { color: var(--muted); }
+    footer p { margin: 6px 0; color: var(--faint); font-size: 13px; max-width: 90ch; }
+
+    @media (max-width: 860px) {
+      .cards, .launcher { grid-template-columns: minmax(0, 1fr); }
+      .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 520px) {
+      .sky { padding-top: 32px; }
+      .sun { width: 80px; height: 80px; right: 6%; top: 24px; }
+      .cloud.c2 { display: none; }
+      .lede { font-size: 16px; }
+      .card { padding: 24px 18px 20px; }
+      .gallery figure.wide { grid-column: span 2; grid-row: auto; }
+    }
+    @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+  </style>
+</head>
+<body>
+  <div class="sky">
+    <span class="sun" aria-hidden="true"></span>
+    <span class="cloud c2" aria-hidden="true"></span>
+    <span class="cloud c1" aria-hidden="true"></span>
+    <div class="wrap">
+      <div class="brand">
+        <img src="icon.png" alt="" width="56" height="56">
+        <span>Clear Skies</span>
+      </div>
+      <h1>Cemu's Clarity, back in Hyrule.</h1>
+      <p class="lede">An add-on for <b>Savage Wind Recomp</b> that brings over Cemu's Clarity look with <b>all 20 presets</b>: less haze, less blown-out bloom, richer colour. Not a single Savage Wind file is changed.</p>
+      <div class="release" id="release"><span class="dot"></span><span>Newest version: <b id="release-name">see the release page</b></span><span id="release-date"></span></div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <main>
+      <section class="cards" aria-label="Download">
+        <article class="card main">
+          <div class="os">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.1 10.4 4v7.2H3zM11.3 3.9 21 2.5v8.7h-9.7zM3 12.1h7.4v7.2L3 18.2zM11.3 12.1H21v8.6l-9.7-1.3z"/></svg>
+            <div><h2>Windows</h2><span class="sub">Windows 10 or 11, 64-bit, with a Vulkan graphics card</span></div>
+          </div>
+          <!-- The zip's name carries the version, so the script below points this at the newest one.
+               Without the script, it opens the newest release on GitHub. -->
+          <a class="btn primary" id="zip-link" href="https://github.com/devall96/ClearSkies/releases/latest">
+            <span class="file">Download Clear Skies<small id="zip-name">ClearSkies-&lt;version&gt;.zip</small></span>
+            <span class="size" id="zip-size"></span>
+          </a>
+          <ol class="steps">
+            <li>Unzip the <b>ClearSkies</b> folder anywhere. Its files must stay together.</li>
+            <li>Run <b>ClearSkies.exe</b>. If Windows says <b>"Windows protected your PC"</b> (Clear Skies isn't code-signed), click <b>More info → Run anyway</b>.</li>
+            <li>Choose a look, click <b>Browse</b> to find your <code>savagewind.exe</code>, and press <b>Play</b>.</li>
+            <li>For a new version, download it here again and unzip it over the old folder.</li>
+          </ol>
+        </article>
+
+        <article class="card">
+          <span class="label">Before you start</span>
+          <ul class="needs">
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg><span><b>A working Savage Wind.</b> Set up with your own game files and started at least once. <a href="https://github.com/Revivedx/SavageWindRecomp">Savage Wind Recomp</a> isn't included.</span></li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg><span><b>Precompiled shaders</b>, for the smoothest first run: <b>Precompile shaders</b> in Savage Wind Configuration.</span></li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg><span><b>Nothing to uninstall.</b> Delete the folder and it's gone. Start <code>savagewind.exe</code> directly any time for the original look.</span></li>
+          </ul>
+        </article>
+      </section>
+
+      <div class="notes">
+        <p class="note caution"><b>No game files, ever.</b> Not in the download, the issues or the wiki. Please don't post game files, dumps, keys or an installed copy.</p>
+        <p class="note warn"><b>Early, tested on one PC</b> (AMD RX 9070 XT, HDR off). NVIDIA, Intel, HDR, Linux and Steam Deck reports are very welcome: <a href="https://github.com/devall96/ClearSkies/issues">open an issue</a>.</p>
+        <p class="note ai"><b>Made with AI.</b> The code, tests, icon and this page were written by Claude through Claude Code, directed and play-tested by devall96. No human reviews the code line by line.</p>
+      </div>
+
+      <h3 class="section">What Clarity looks like</h3>
+      <p class="section-sub">Serfrost's preset, Clarity's recommended look. Nineteen more ship with it, from Filmic to Survival of the Wild, and all 65 of Clarity's settings can be tuned on top.</p>
+      <div class="gallery">
+        <figure class="wide"><img src="images/golden-field.jpg" alt="A golden evening in Hyrule Field" loading="lazy"><figcaption>Hyrule Field</figcaption></figure>
+        <figure><img src="images/kakariko.jpg" alt="Kakariko Village" loading="lazy"><figcaption>Kakariko</figcaption></figure>
+        <figure><img src="images/hateno.jpg" alt="Hateno Village" loading="lazy"><figcaption>Hateno</figcaption></figure>
+        <figure><img src="images/rito.jpg" alt="Rito Village" loading="lazy"><figcaption>Rito Village</figcaption></figure>
+        <figure><img src="images/gerudo.jpg" alt="Gerudo Desert" loading="lazy"><figcaption>Gerudo Desert</figcaption></figure>
+        <figure><img src="images/plateau.jpg" alt="The Great Plateau" loading="lazy"><figcaption>Great Plateau</figcaption></figure>
+        <figure><img src="images/castle-road.jpg" alt="The road to Hyrule Castle" loading="lazy"><figcaption>Castle road</figcaption></figure>
+      </div>
+
+      <section class="launcher">
+        <img src="launcher.png" alt="The Clear Skies launcher: choose a look, point it at savagewind.exe, press Play" width="576" height="509" loading="lazy">
+        <div>
+          <h3 class="section">Pick a look, press Play</h3>
+          <p class="section-sub">A small launcher starts Savage Wind with Clarity switched on for that one run. To try another preset, choose it and press Play again.</p>
+          <ul class="points">
+            <li><b>20 presets, 65 settings</b>Every preset from Cemu's pack, and every Clarity setting adjustable on top, with the same names as in Cemu.</li>
+            <li><b>Your game stays untouched</b>Clear Skies runs as a Vulkan layer for the game it starts, and only replaces one shader on its way to your graphics card.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="planned" aria-labelledby="planned-title">
+        <div class="planned-head">
+          <h3 class="section" id="planned-title">Coming: a full mod manager</h3>
+          <span class="pill">In the works · not in the download yet</span>
+        </div>
+        <p class="section-sub">Clear Skies is growing into a mod manager for Breath of the Wild on Savage Wind, for the mods that can't go into Savage Wind itself. This is the plan; follow along on <a href="https://github.com/devall96/ClearSkies">GitHub</a>.</p>
+        <ul class="points">
+          <li><b>Your mods in one list</b>Drop a mod's <code>.zip</code>, <code>.7z</code>, <code>.rar</code> or folder on the window, tick the ones you want and put them in order.</li>
+          <li><b>Any layout</b>A Switch <code>romfs</code> folder, Atmosphère's layout, a BCML export or the bare files, with DLC files put where they belong.</li>
+          <li><b>Clear about conflicts</b>See which mods change the same files and which one wins, and which mods can't work, with the reason.</li>
+          <li><b>GameBanana built in</b>Browse, search and look at mods without leaving Clear Skies, then download and install one in a click, checked against GameBanana's MD5.</li>
+          <li><b>Preset saves</b>Install a 100% save or one from a certain point. Your own saves are backed up first, and any backup can be put back.</li>
+          <li><b>Pack merging</b>Two mods that change the same pack get merged together, instead of one replacing the other.</li>
+          <li><b>Bigger files that load</b>The game's resource size table is adjusted for you, so mods that make files bigger just work.</li>
+          <li><b>Wii U mods on Switch</b>Wii U mods and Cemu graphic packs converted to the Switch's byte order, so the game can read them.</li>
+          <li><b>Never touches the game</b>Mods are merged when you press Play, through Savage Wind's own overlay. Start the game directly and it's unmodded.</li>
+          <li><b>Updates itself</b>An Update button when there's a new Clear Skies, checked against GitHub's checksum, keeping your settings and mods.</li>
+        </ul>
+        <p class="later"><b>Later:</b> Nexus Mods, and other recomps besides Savage Wind.</p>
+      </section>
+    </main>
+
+    <footer>
+      <nav>
+        <a href="https://github.com/devall96/ClearSkies/releases/latest">Release notes</a>
+        <a href="https://github.com/devall96/ClearSkies/releases">All releases</a>
+        <a href="https://github.com/devall96/ClearSkies#readme">Full guide</a>
+        <a href="https://github.com/devall96/ClearSkies">Source code</a>
+        <a href="https://github.com/devall96/ClearSkies/issues">Report a problem</a>
+      </nav>
+      <p>Clear Skies is a fan-made mod. It isn't made by, affiliated with or endorsed by the Savage Wind Recomp team, the Cemu team or Nintendo. Please report Clear Skies problems here, not to Savage Wind or Cemu.</p>
+      <p>Clarity GFX by Jamie and Kiri with Crementif, from the Cemu graphic packs (CC0 1.0); presets by their named authors. <i>The Legend of Zelda: Breath of the Wild</i> is © Nintendo.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Version, date, zip name and size from GitHub. The button works without this (it opens the release page).
+    (function () {
+      function mb(bytes) { return bytes < 1048576 ? Math.round(bytes / 1024) + " KB" : (bytes / 1048576).toFixed(1) + " MB"; }
+      fetch("https://api.github.com/repos/devall96/ClearSkies/releases/latest", { headers: { Accept: "application/vnd.github+json" } })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (rel) {
+          if (!rel) return;
+          document.getElementById("release-name").textContent = rel.name || rel.tag_name;
+          if (rel.published_at) {
+            var d = new Date(rel.published_at);
+            document.getElementById("release-date").textContent = "· " + d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+          }
+          // The same zip the launcher's updater picks: the first .zip in the release.
+          var zip = (rel.assets || []).filter(function (a) { return /\.zip$/i.test(a.name); })[0];
+          if (zip) {
+            document.getElementById("zip-link").href = zip.browser_download_url;
+            document.getElementById("zip-name").textContent = zip.name;
+            document.getElementById("zip-size").textContent = mb(zip.size);
+          }
+        })
+        .catch(function () { /* offline or rate-limited: the page still works */ });
+    })();
+  </script>
+</body>
+</html>
