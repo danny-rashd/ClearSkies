@@ -1,15 +1,30 @@
 // Clear Skies: a test of the layer outside the game.
 //
-//   layer_test.exe <folder with libshaderc_shared.dll>
+//   layer_test.exe <folder with libshaderc_shared.dll>      (Windows)
+//   layer_test [folder with libshaderc_shared.so.1]          (Linux: without a folder, the system's shaderc)
 //
-// Run with the layer turned on (tests/run_tests.ps1 does that). Compiles a stand-in for the tone-map composite as
+// Run with the layer turned on (tests/run_tests.ps1 or tests/run_tests.sh does that). Compiles a stand-in for the tone-map composite as
 // Savage Wind writes it (the same constants, bindings and interface) and an ordinary fragment shader, creates a
 // Vulkan device on the first GPU and calls vkCreateShaderModule with both. The layer's log (clearskies.log) then
-// says whether Clarity was compiled and swapped in; run_tests.ps1 checks it.
+// says whether Clarity was compiled and swapped in; run_tests checks it.
+#ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#define SHADERC_FILE "libshaderc_shared.dll"
+#define VULKAN_FILE "vulkan-1.dll"
+#else
+#include <dlfcn.h>
+typedef void *HMODULE;
+#define MAX_PATH 4096
+#define GetProcAddress dlsym
+// RTLD_GLOBAL: the game links shaderc, so the layer finds it already loaded; the test does the same
+#define LoadLibraryA(p) dlopen((p), RTLD_NOW | RTLD_GLOBAL)
+#define SHADERC_FILE "libshaderc_shared.so.1"
+#define VULKAN_FILE "libvulkan.so.1"
+#endif
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "../src/vk_min.h"
@@ -70,16 +85,30 @@ static uint32_t *spirv(const char *src, size_t *bytes) {
 #define GET(type, name) type name = (type)(void *)gipa(inst, #name)
 
 int main(int argc, char **argv) {
-    if (argc < 2) { printf("usage: layer_test <folder with libshaderc_shared.dll>\n"); return 2; }
     char p[MAX_PATH];
-    snprintf(p, sizeof p, "%s\\libshaderc_shared.dll", argv[1]);
-    if (!(g_sc = LoadLibraryA(p))) { printf("FAIL: can't load %s\n", p); return 1; }
+#ifdef _WIN32
+    if (argc < 2) { printf("usage: layer_test <folder with libshaderc_shared.dll>\n"); return 2; }
+    snprintf(p, sizeof p, "%s\\" SHADERC_FILE, argv[1]);
+    g_sc = LoadLibraryA(p);
+#else
+    static const char *const system_names[] = {"libshaderc_shared.so.1", "libshaderc_shared.so", "libshaderc.so.1"};
+    if (argc >= 2) {
+        snprintf(p, sizeof p, "%s/" SHADERC_FILE, argv[1]);
+        g_sc = LoadLibraryA(p);
+    } else {
+        for (size_t i = 0; !g_sc && i < sizeof system_names / sizeof system_names[0]; i++) {
+            snprintf(p, sizeof p, "%s", system_names[i]);
+            g_sc = LoadLibraryA(p);
+        }
+    }
+#endif
+    if (!g_sc) { printf("FAIL: can't load %s\n", p); return 1; }
     size_t nt, no;
     uint32_t *tonemap = spirv(k_tonemap, &nt), *other = spirv(k_other, &no);
     if (!tonemap || !other) return 1;
 
-    HMODULE vk = LoadLibraryA("vulkan-1.dll");
-    if (!vk) { printf("FAIL: no Vulkan loader (vulkan-1.dll)\n"); return 1; }
+    HMODULE vk = LoadLibraryA(VULKAN_FILE);
+    if (!vk) { printf("FAIL: no Vulkan loader (" VULKAN_FILE ")\n"); return 1; }
     PFN_vkGetInstanceProcAddr gipa = (PFN_vkGetInstanceProcAddr)(void *)GetProcAddress(vk, "vkGetInstanceProcAddr");
     VkInstance inst = NULL;
     PFN_vkCreateInstance create_inst = (PFN_vkCreateInstance)(void *)gipa(NULL, "vkCreateInstance");

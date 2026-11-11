@@ -4,7 +4,11 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef _WIN32
 #define VKAPI_CALL __stdcall
+#else
+#define VKAPI_CALL
+#endif
 #define VKAPI_PTR VKAPI_CALL
 
 typedef int32_t VkResult;

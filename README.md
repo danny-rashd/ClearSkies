@@ -71,6 +71,39 @@ From then on, start the game with ClearSkies.exe whenever you want Clarity. To c
 
 **Uninstalling:** delete the `ClearSkies` folder. Nothing else was changed.
 
+### On Linux and Steam Deck
+
+Savage Wind runs natively on Linux as an AppImage, and Clear Skies has a native Linux build for it: `libclearskies_layer.so` and a launcher script, `clearskies.sh`, in place of the Windows `.dll` and `.exe`. It works the same way: the layer is switched on only for the game the script starts, and nothing is installed system-wide.
+
+1. Have a working **Savage Wind AppImage** first (`Savage_Wind-…-x86_64.AppImage`), set up with your game files and started at least once.
+2. Build Clear Skies (see [Build it yourself](#build-it-yourself)), or unpack a Linux build, and keep the `ClearSkies-linux` folder's files together.
+3. Point it at the game once, choose a look, and play:
+
+```bash
+./clearskies.sh --game ~/Games/Savage_Wind-0.5.1-alpha.5-x86_64.AppImage --preset serfrost
+```
+
+After that, `./clearskies.sh` starts the game with the saved settings.
+
+| | |
+| --- | --- |
+| `./clearskies.sh` | Start with the saved preset and game |
+| `./clearskies.sh --preset filmic` | Choose a preset (it's saved) and start |
+| `./clearskies.sh --list` | List the presets |
+| `./clearskies.sh --edit` | Open `clearskies.ini` in your editor |
+| `./clearskies.sh --preset filmic --no-play` | Only save the choice |
+| `./clearskies.sh -- --config` | Anything after `--` goes to Savage Wind |
+
+**Steam and Steam Deck:** add the AppImage to Steam as a non-Steam game (native, without Proton), then set its launch options to:
+
+```
+/home/deck/ClearSkies-linux/clearskies.sh %command%
+```
+
+Use the path where you keep the folder. The game then starts with your saved preset. To change it, run `./clearskies.sh --preset <name> --no-play` from a terminal (in Desktop Mode on the Deck).
+
+The layer uses the shaderc library that the Savage Wind AppImage ships, so nothing else needs to be installed. If that copy can't be found, it falls back to the system's shaderc (`libshaderc1` on Debian and Ubuntu, `libshaderc` on Fedora, `shaderc` on Arch), and `clearskies.log` says which copy it used. The log is written next to `clearskies.ini`, and the Troubleshooting table below applies on Linux too. On Linux, "keep all of Clear Skies' files together" means `libclearskies_layer.so`, `VkLayer_clearskies.json` and `clearskies.sh`.
+
 ## The presets
 
 | `preset =` | From Cemu's pack |
@@ -171,12 +204,32 @@ This writes the mod to `dist\ClearSkies`. To test the layer on your own GPU agai
 powershell -ExecutionPolicy Bypass -File tests\run_tests.ps1 -SavageWind "C:\Games\Savage Wind"
 ```
 
+**On Linux** you need a C compiler (gcc or clang) and, optionally, Python 3 to regenerate the presets. This writes the mod to `dist/ClearSkies-linux`:
+
+```bash
+./build.sh
+```
+
+To cross-compile from another OS (macOS, for example) with Zig, targeting the same glibc as Savage Wind's AppImage:
+
+```bash
+CC="zig cc -target x86_64-linux-gnu.2.35" ./build.sh
+```
+
+The Linux test runs the layer against every preset. It needs a Vulkan driver (Mesa's software driver, lavapipe, is enough) and shaderc: either the system's, or the AppImage's after `./Savage_Wind-*.AppImage --appimage-extract`:
+
+```bash
+tests/run_tests.sh squashfs-root/usr/lib
+```
+
 | | |
 | --- | --- |
 | `src/clearskies_layer.c` | The Vulkan layer: finds the tone-mapping shader and swaps in Clarity |
 | `src/clarity_shader.h` | Clarity's inputs and `main()` for Savage Wind |
 | `src/cemu_presets.h` | Generated: every preset and Clarity's functions, from Cemu's files |
 | `src/launcher.c` | ClearSkies.exe |
+| `src/clearskies.sh` | The Linux launcher script |
+| `build.sh`, `tests/run_tests.sh` | The Linux build and layer test |
 | `tools/gen_presets.py` | Generates `cemu_presets.h` and `clearskies.ini` from `third_party/cemu` |
 | `tools/make_icon.py`, `tools/make_banner.ps1` | Draw the icon and this page's banner |
 | `tests/` | The layer test, run on a real GPU |
